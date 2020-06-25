@@ -10,14 +10,13 @@ def getTodaysCheckins():
   reservationsOf = '&listings[]='
 
   url = f"{baseURL}?{airbnbAll}&start_date={date}&end_date={date}&include=guest"
-
   payload = {}
   headers = {
     'Content-Type': contentType,
     'Authorization': authToken
     }
-
   response = requests.request("GET", url, headers=headers, data = payload)
+  
   utf8Response = response.text.encode('utf8')
   jsonResponse = json.loads(utf8Response)
   # print (utf8Response)
