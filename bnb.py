@@ -7,9 +7,8 @@ from secret.urls_bnb import baseURL
 
 def getTodaysCheckins():
   date = str(datetime.datetime.now()).split(" ")[0]
-  reservationsOf = '&listings[]='
-
   url = f"{baseURL}?{airbnbAll}&start_date={date}&end_date={date}&include=guest"
+
   payload = {}
   headers = {
     'Content-Type': contentType,
@@ -33,7 +32,7 @@ def getTodaysCheckins():
     checkinDict['name'] = jsonResponse['data'][0]['_included'][0]['data']['first_name']
     checkinDict['code'] = jsonResponse['data'][0]['_included'][0]['data']['phone'].split('-')[1]
     checkinList.append(checkinDict)
-
+    print (checkinList)
   return (checkinList)
 # print (getTodaysCheckins())
 

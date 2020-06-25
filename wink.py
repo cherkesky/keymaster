@@ -6,7 +6,7 @@ from bnb import getTodaysCheckins
 
 
 dummydata = [{'name': 'GuyCh', 'code': '1173', 'checkin': '2020-06-25',
-    'checkout': '2020-06-26', 'locks': ['257145']}]
+    'checkout': '2020-06-25', 'locks': ['257145']}]
 
 today = str(datetime.datetime.now()).split(" ")[0]
 
@@ -25,13 +25,13 @@ def makeWorkOrder():
 
 
 def programCodes(workorder):
-    print ("Boop Boop - Codes Are Being Programmed...")
     for guest in workorder:
         locks = guest['locks']
         guestCode = guest['code']
         guestName = guest['name']
         guestCheckIn = guest['checkin']
         if guestCheckIn==today:
+          print ("Boop Boop - Codes Are Being Programmed...")
           for lock in locks:
               try:
                 url = f"{baseURL}/locks/{lock}/keys"
@@ -41,7 +41,7 @@ def programCodes(workorder):
                 'Authorization': authToken
                 }
 
-                requests.request("POST", url, headers=headers, data = payload)
+                # requests.request("POST", url, headers=headers, data = payload)
                 print("------------------------------------------------------")
                 print ("POST request for: ", guestName)
                 print ("url: ", url)
@@ -51,10 +51,9 @@ def programCodes(workorder):
 
               except Exception as e:
                 print(e)
-
+        else: print ("No codes to program today")
 
 def deleteCodes(workorder):
-  print ("Boop Boop - Codes Are Being Deleted...")
   for guest in workorder:
     locks = guest['locks']
     for lock in locks:
@@ -74,6 +73,7 @@ def deleteCodes(workorder):
       keys = jsonResponse['data']
       for key in keys:
         if key['name'] == guestName and guestCheckOut==today:
+          print ("Boop Boop - Codes Are Being Deleted...")
           try:
             url = f"{baseURL}/keys/{key['key_id']}"
             headers = {
@@ -81,7 +81,7 @@ def deleteCodes(workorder):
             'Authorization': authToken
             }
 
-            requests.request("DELETE", url, headers=headers, data = payload)
+            # requests.request("DELETE", url, headers=headers, data = payload)
             print("------------------------------------------------------")
             print ("DELETE request for: ", guestName)
             print ("Checking Out At: ", guestCheckOut)
@@ -94,11 +94,11 @@ def deleteCodes(workorder):
 
           except Exception as e:
             print(e)
-        else: print (key['name'], " Not needed to be deleted today")
+        else: print (key['name'], "Doesnt need to be deleted today")
       
 
 # programCodes(makeWorkOrder())
 # deleteCodes(makeWorkOrder())
 
 # programCodes(dummydata)
-deleteCodes(dummydata)
+# deleteCodes(dummydata)
