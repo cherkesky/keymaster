@@ -1,2 +1,4 @@
 /samples
-samples
+/secret
+/env
+.vscode
