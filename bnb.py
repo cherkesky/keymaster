@@ -1,9 +1,9 @@
 import requests
 import datetime
 import json
-from secret.keys import authToken, contentType
+from secret.keys_bnb import authToken, contentType
 from secret.listings import airbnbAll
-from secret.urls import baseURL
+from secret.urls_bnb import baseURL
 
 def getTodaysCheckins():
   date = str(datetime.datetime.now()).split(" ")[0]
@@ -20,6 +20,7 @@ def getTodaysCheckins():
   response = requests.request("GET", url, headers=headers, data = payload)
   utf8Response = response.text.encode('utf8')
   jsonResponse = json.loads(utf8Response)
+  # print (utf8Response)
 
   checkinDict ={}
   checkinList =[]
@@ -35,6 +36,5 @@ def getTodaysCheckins():
     checkinList.append(checkinDict)
 
   return (checkinList)
-
 # print (getTodaysCheckins())
 

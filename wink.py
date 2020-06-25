@@ -1,6 +1,12 @@
 import requests
+# from secret.devices import locks
 from bnb import getTodaysCheckins
 
-locksToProgram = getTodaysCheckins()
+TodaysCheckins = getTodaysCheckins()
+print (TodaysCheckins)
 
-print (locksToProgram)
+def makeWorkOrder():
+  print ("Work Order Is Ready")
+
+def programLocks():
+  print ("Boop Boop - Lock Has Been Programmed")
