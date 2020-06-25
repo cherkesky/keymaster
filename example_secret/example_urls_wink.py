@@ -1,0 +1,1 @@
+baseURL = '<smart_iot_hub_endpoint_url_goes_here >' #ex https://api.wink.com

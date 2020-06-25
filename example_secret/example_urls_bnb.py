@@ -1,0 +1,1 @@
+baseURL = '<endpoint_url_goes_here >'#ex 'https://api.airbnb.com/calendar/reservations'
