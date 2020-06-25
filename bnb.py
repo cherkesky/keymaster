@@ -16,7 +16,7 @@ def getTodaysCheckins():
     'Authorization': authToken
     }
   response = requests.request("GET", url, headers=headers, data = payload)
-  
+
   utf8Response = response.text.encode('utf8')
   jsonResponse = json.loads(utf8Response)
   # print (utf8Response)
