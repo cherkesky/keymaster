@@ -1,12 +1,24 @@
 import requests
-# from secret.devices import locks
+from secret.devices import listinglocks
 from bnb import getTodaysCheckins
 
 TodaysCheckins = getTodaysCheckins()
-print (TodaysCheckins)
 
 def makeWorkOrder():
-  print ("Work Order Is Ready")
+  workOrderDict={}
+  for checkin in TodaysCheckins:
+    workOrderDict['name'] = checkin['name']
+    workOrderDict['code'] = checkin['code']
+    workOrderDict['checkin'] = checkin['checkin']
+    workOrderDict['checkout'] = checkin['checkout']
+    workOrderDict['locks']= listinglocks[checkin['listing']]
+  return workOrderDict
+    
+def programCodes():
+  print ("Boop Boop - Codes Has Been Programmed")
 
-def programLocks():
-  print ("Boop Boop - Lock Has Been Programmed")
+def deleteCodes():
+  print ("Boop Boop - Codes Has Been Deleted")
+
+
+print (makeWorkOrder())
