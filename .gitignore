@@ -1,4 +1,5 @@
 /samples
 /secret
 /env
+/__pycache__
 .vscode

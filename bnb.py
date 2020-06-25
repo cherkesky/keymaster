@@ -35,6 +35,6 @@ def getTodaysCheckins():
     checkinList.append(checkinDict)
 
   return (checkinList)
-  
-print (getTodaysCheckins())
+
+# print (getTodaysCheckins())
 
