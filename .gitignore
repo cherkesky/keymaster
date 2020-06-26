@@ -2,4 +2,6 @@
 /secret
 /env
 /__pycache__
+/python
 .vscode
+python.zip
