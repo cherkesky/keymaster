@@ -73,5 +73,5 @@ def getTodaysCheckins():
   except Exception as e:
     print(e) 
 
-print (getTodaysCheckins())
+# print (getTodaysCheckins())
 
