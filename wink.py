@@ -9,6 +9,7 @@ dummydata = [{'name': 'GuyCh', 'code': '1173', 'checkin': '2020-06-25',
     'checkout': '2020-06-25', 'locks': ['257145']}]
 
 today = str(datetime.datetime.now()).split(" ")[0]
+# today = '2020-07-02'
 
 def makeWorkOrder():
     TodaysCheckins = getTodaysCheckins()
@@ -41,7 +42,7 @@ def programCodes(workorder):
                 'Authorization': authToken
                 }
 
-                # requests.request("POST", url, headers=headers, data = payload)
+                requests.request("POST", url, headers=headers, data = payload)
                 print("------------------------------------------------------")
                 print ("POST request for: ", guestName)
                 print ("url: ", url)
@@ -58,6 +59,7 @@ def deleteCodes(workorder):
     locks = guest['locks']
     for lock in locks:
       print ("Lock: ", lock)
+      print("------------------------------------------------------")
       url = f"{baseURL}/locks/{lock}/keys"
       guestName = guest['name']
       guestCheckOut = guest['checkout']
@@ -81,7 +83,7 @@ def deleteCodes(workorder):
             'Authorization': authToken
             }
 
-            # requests.request("DELETE", url, headers=headers, data = payload)
+            requests.request("DELETE", url, headers=headers, data = payload)
             print("------------------------------------------------------")
             print ("DELETE request for: ", guestName)
             print ("Checking Out At: ", guestCheckOut)
