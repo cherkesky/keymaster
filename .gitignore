@@ -3,5 +3,6 @@
 /env
 /__pycache__
 /python
+.DS_Store
 .vscode
 python.zip
