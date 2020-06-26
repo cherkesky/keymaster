@@ -8,11 +8,14 @@ from bnb import getTodaysCheckins
 dummydata = [{'name': 'GuyCh', 'code': '1173', 'checkin': '2020-06-25',
     'checkout': '2020-06-25', 'locks': ['257145']}]
 
-today = str(datetime.datetime.now()).split(" ")[0]
-# today = '2020-07-02'
+today = str(datetime.datetime.now()).split(" ")[0] #  'YYYY-MM-DD'
 
 def makeWorkOrder():
     TodaysCheckins = getTodaysCheckins()
+    if TodaysCheckins == None: # Happens sometimes after refreshing the bnb auth token
+      print ("Something didnt work. Trying again..")
+      TodaysCheckins = getTodaysCheckins()
+    print ("TodaysCheckins", TodaysCheckins)
     workOrderDict = {}
     workOrderList = []
     for checkin in TodaysCheckins:
@@ -42,7 +45,7 @@ def programCodes(workorder):
                 'Authorization': authToken
                 }
 
-                requests.request("POST", url, headers=headers, data = payload)
+                # requests.request("POST", url, headers=headers, data = payload)
                 print("------------------------------------------------------")
                 print ("POST request for: ", guestName)
                 print ("url: ", url)
@@ -58,7 +61,7 @@ def deleteCodes(workorder):
   for guest in workorder:
     locks = guest['locks']
     for lock in locks:
-      print ("Lock: ", lock)
+      print (f"\n","Lock: ", lock)
       print("------------------------------------------------------")
       url = f"{baseURL}/locks/{lock}/keys"
       guestName = guest['name']
@@ -83,7 +86,7 @@ def deleteCodes(workorder):
             'Authorization': authToken
             }
 
-            requests.request("DELETE", url, headers=headers, data = payload)
+            # requests.request("DELETE", url, headers=headers, data = payload)
             print("------------------------------------------------------")
             print ("DELETE request for: ", guestName)
             print ("Checking Out At: ", guestCheckOut)
@@ -99,8 +102,9 @@ def deleteCodes(workorder):
         else: print (key['name'], "Doesnt need to be deleted today")
       
 
-# programCodes(makeWorkOrder())
+programCodes(makeWorkOrder())
 # deleteCodes(makeWorkOrder())
 
 # programCodes(dummydata)
 # deleteCodes(dummydata)
+
