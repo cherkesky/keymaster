@@ -74,4 +74,3 @@ def getTodaysCheckins():
     print(e) 
 
 # print (getTodaysCheckins())
-
