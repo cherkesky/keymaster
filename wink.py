@@ -45,7 +45,7 @@ def programCodes(workorder):
                 'Authorization': authToken
                 }
 
-                # requests.request("POST", url, headers=headers, data = payload)
+                requests.request("POST", url, headers=headers, data = payload)
                 print("------------------------------------------------------")
                 print ("POST request for: ", guestName)
                 print ("url: ", url)
@@ -86,7 +86,7 @@ def deleteCodes(workorder):
             'Authorization': authToken
             }
 
-            # requests.request("DELETE", url, headers=headers, data = payload)
+            requests.request("DELETE", url, headers=headers, data = payload)
             print("------------------------------------------------------")
             print ("DELETE request for: ", guestName)
             print ("Checking Out At: ", guestCheckOut)
@@ -102,7 +102,7 @@ def deleteCodes(workorder):
         else: print (key['name'], "Doesnt need to be deleted today")
       
 
-programCodes(makeWorkOrder())
+# programCodes(makeWorkOrder())
 # deleteCodes(makeWorkOrder())
 
 # programCodes(dummydata)
