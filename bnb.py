@@ -6,7 +6,7 @@ import importlib
 import time
 from secret import keys_bnb
 from secret.listings import airbnbAll
-from secret.urls_bnb import baseURL
+from secret.urls_bnb import baseURL, refreshURL, refreshPayload, refreshContent
 
 def getTodaysCheckins():
   today = str(datetime.now()).split(" ")[0]  # YYYY-MM-DD
@@ -60,11 +60,11 @@ def getTodaysCheckins():
 
 
 def getRefreshedToken():
-  url = "https://auth.smartbnb.io/oauth/token"
-  payload = 'audience=api.smartbnb.io&grant_type=client_credentials'
+  url = refreshURL
+  payload = refreshPayload
   headers = {
     'Authorization': keys_bnb.refreshToken,
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': refreshContent
   }
   response = requests.request("POST", url, headers=headers, data = payload)
   tokenResponseUtf8 = (response.text.encode('utf8'))
@@ -82,4 +82,6 @@ def getRefreshedToken():
     keyfileContent = None
   importlib.reload(keys_bnb)  # reloading the updated authToken resource
   print ("Access Token Has Been Refreshed")
+
+
 # print (getTodaysCheckins())
