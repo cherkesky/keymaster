@@ -31,7 +31,6 @@ def makeWorkOrder():
         return workOrderList
 
 def programCodes(workorder):
-  authToken = get_secret()
   print ("Work Order: ",workorder)
   if workorder==404:
     print ("No guest activity today")
@@ -49,7 +48,7 @@ def programCodes(workorder):
                 payload = f"{{\n    \"code\": \"{guestCode}\", \n    \"name\": \"{guestName}\"\n    }}"
                 headers = {
                 'Content-Type': contentType,
-                'Authorization': f'Bearer {authToken}'
+                'Authorization': authToken
                 }
 
                 requests.request("POST", url, headers=headers, data = payload)
@@ -65,7 +64,6 @@ def programCodes(workorder):
         else: print ("No codes to program today")
 
 def deleteCodes(workorder):
-  authToken = get_secret()
   print ("Work Order: ",workorder)
   if workorder==404:
       print ("No guest activity today")
@@ -81,7 +79,7 @@ def deleteCodes(workorder):
         payload = {}
         headers = {
           'Content-Type': contentType,
-          'Authorization': f'Bearer {authToken}'
+          'Authorization': authToken
           }
 
         response = requests.request("GET", url, headers=headers, data = payload)
