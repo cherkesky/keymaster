@@ -2,7 +2,7 @@ import requests, json, datetime
 from secret.devices import listinglocks
 from secret.urls_wink import baseURL
 from secret.keys_wink import authToken, contentType
-from bnb import getTodaysCheckins
+from bnb import getTodaysCheckins, get_secret
 
 today = str(datetime.datetime.now()).split(" ")[0] #  'YYYY-MM-DD'
 
@@ -14,7 +14,7 @@ def makeWorkOrder():
       return workOrderList  
     elif TodaysCheckins == None: # Happens sometimes after refreshing the bnb auth token
         print ("Something didnt work. Trying again..")
-        TodaysCheckins = getTodaysCheckins('delete')
+        TodaysCheckins = getTodaysCheckins()
         if TodaysCheckins == 404: # No guest activity today
           workOrderList = 404
           return workOrderList
@@ -31,6 +31,7 @@ def makeWorkOrder():
         return workOrderList
 
 def programCodes(workorder):
+  authToken = get_secret()
   print ("Work Order: ",workorder)
   if workorder==404:
     print ("No guest activity today")
@@ -48,7 +49,7 @@ def programCodes(workorder):
                 payload = f"{{\n    \"code\": \"{guestCode}\", \n    \"name\": \"{guestName}\"\n    }}"
                 headers = {
                 'Content-Type': contentType,
-                'Authorization': authToken
+                'Authorization': f'Bearer {authToken}'
                 }
 
                 requests.request("POST", url, headers=headers, data = payload)
@@ -64,6 +65,7 @@ def programCodes(workorder):
         else: print ("No codes to program today")
 
 def deleteCodes(workorder):
+  authToken = get_secret()
   print ("Work Order: ",workorder)
   if workorder==404:
       print ("No guest activity today")
@@ -79,7 +81,7 @@ def deleteCodes(workorder):
         payload = {}
         headers = {
           'Content-Type': contentType,
-          'Authorization': authToken
+          'Authorization': f'Bearer {authToken}'
           }
 
         response = requests.request("GET", url, headers=headers, data = payload)

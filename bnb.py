@@ -1,14 +1,17 @@
 import requests
-from datetime import datetime, timedelta
+import boto3
+import base64
 import json
 import re
-import importlib
 import time
 from secret import keys_bnb
 from secret.listings import airbnbAll
+from datetime import datetime, timedelta
+from botocore.exceptions import ClientError
 from secret.urls_bnb import baseURL, refreshURL, refreshPayload, refreshContent
 
 def getTodaysCheckins():
+  authToken = get_secret()
   today = str(datetime.now()).split(" ")[0]  # YYYY-MM-DD
   startDate = str(datetime.now()-timedelta(days=10)).split(" ")[0]  # YYYY-MM-DD -10days
 
@@ -17,7 +20,7 @@ def getTodaysCheckins():
   payload = {}
   headers = {
     'Content-Type': keys_bnb.contentType,
-    'Authorization': keys_bnb.authToken
+    'Authorization': f'Bearer {authToken}'
     }
   try:
     response = requests.request("GET", url, headers=headers, data=payload)
@@ -37,7 +40,7 @@ def getTodaysCheckins():
       return 404
     elif statusCode == 401:  # Unauthorized. Token expired. 
       print("Token expired. Obtaining new Token")
-      getRefreshedToken()
+      obtain_token(True) # Making sure the refresh fn will recursively call this fn upon completion 
     else: # All good. Token is still valid and valid data returned
       checkinList =[]
       for guest in jsonResponse['data']:
@@ -58,30 +61,68 @@ def getTodaysCheckins():
   except Exception as e:
     print(e) 
 
+def get_secret():
+    secret_name = "BNBKey"
+    region_name = "us-east-2"
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'DecryptionFailureException':
+            raise e
+        elif e.response['Error']['Code'] == 'InternalServiceErrorException':
+            raise e
+        elif e.response['Error']['Code'] == 'InvalidParameterException':
+            raise e
+        elif e.response['Error']['Code'] == 'InvalidRequestException':
+            raise e
+        elif e.response['Error']['Code'] == 'ResourceNotFoundException':
+            raise e
+    else:
+        if 'SecretString' in get_secret_value_response:
+            secret = get_secret_value_response['SecretString']
+            tokenResponseUtf8 = (secret.encode('utf8'))
+            jsonNewToken = json.loads(tokenResponseUtf8)
+            authToken = jsonNewToken['authToken']
+            return authToken
 
-def getRefreshedToken():
-  url = refreshURL
-  payload = refreshPayload
+        else:
+            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+
+def obtain_token(fromGetTodaysCheckins=False):
+  url = "https://auth.smartbnb.io/oauth/token"
+  payload = 'audience=api.smartbnb.io&grant_type=client_credentials'
   headers = {
     'Authorization': keys_bnb.refreshToken,
-    'Content-Type': refreshContent
+    'Content-Type': 'application/x-www-form-urlencoded'
   }
   response = requests.request("POST", url, headers=headers, data = payload)
   tokenResponseUtf8 = (response.text.encode('utf8'))
   jsonNewToken = json.loads(tokenResponseUtf8)
   newRefreshedToken = jsonNewToken['access_token']
-  try:  # Updating the authToken value in the resource file
-    with open('./secret/keys_bnb.py', "r+") as keyfile:
-      keyfileContent = keyfile.read()
-      keyfileContent = re.sub(
-          f'authToken=\"(.*?)\"', f'authToken=\"Bearer {newRefreshedToken}\"', keyfileContent)
-      keyfile.seek(0)
-      keyfile.write(keyfileContent)
-      keyfile.truncate()
-  except FileNotFoundError:
-    keyfileContent = None
-  importlib.reload(keys_bnb)  # reloading the updated authToken resource
-  print ("Access Token Has Been Refreshed")
 
+  secret_name = "BNBKey"
+  region_name = "us-east-2"
+  # Create a Secrets Manager client
+  session = boto3.session.Session()
+  client = session.client(
+      service_name='secretsmanager',
+      region_name=region_name
+  )
+  put_secret_value_response = client.put_secret_value(
+          SecretId=secret_name,
+          SecretString = f'{{"authToken": \"{newRefreshedToken}\" }}'
+
+  )
+  print ("Access Token Has Been Refreshed")
+  if fromGetTodaysCheckins==True:
+    return getTodaysCheckins()
 
 # print (getTodaysCheckins())
