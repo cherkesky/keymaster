@@ -97,8 +97,8 @@ def get_secret():
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
 def obtain_token(fromGetTodaysCheckins=False):
-  url = "https://auth.smartbnb.io/oauth/token"
-  payload = 'audience=api.smartbnb.io&grant_type=client_credentials'
+  url = refreshURL
+  payload = refreshPayload
   headers = {
     'Authorization': keys_bnb.refreshToken,
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -122,6 +122,7 @@ def obtain_token(fromGetTodaysCheckins=False):
 
   )
   print ("Access Token Has Been Refreshed")
+  print (newRefreshedToken)
   if fromGetTodaysCheckins==True:
     return getTodaysCheckins()
 
