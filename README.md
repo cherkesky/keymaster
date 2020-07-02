@@ -8,6 +8,9 @@ Every day at check-in time Keymaster reaches out to check if there are any guest
 #### Design: 
 <img src="https://github.com/cherkesky/keymaster/blob/master/design.png" height="500" width="800">
 
+#### KeymasterFn lambda:
+<img src="https://github.com/cherkesky/keymaster/blob/master/eventbridge.png" height="500" width="800">
+
 #### Sample Report: 
 <img src="https://github.com/cherkesky/keymaster/blob/master/report.png" height="500" width="800">
 
