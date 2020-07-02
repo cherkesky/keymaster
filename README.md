@@ -7,6 +7,8 @@ Every day at checkin time Keymaster reaches out to check if there are any guests
 
 
 <img src="https://github.com/cherkesky/keymaster/blob/master/design.png" height="500" width="800">
+<img src="https://github.com/cherkesky/keymaster/blob/master/report.png" height="500" width="800">
+
 
 ## Details
 
@@ -42,7 +44,7 @@ Every day at checkin time Keymaster reaches out to check if there are any guests
 ### Technology Stack: 
 - Python
 - AWS Roles: Custom IAM Roles (JSON)
-- Email: AWS SES
+- Email: AWS SES (Cross region integration)
 - Lambda: Lambda Function, EventBridge, Python 3.8 Layers
 - Cron: EventBridge using custom cron expressions
 - Credentials: AWS Secret Manager, static key files
