@@ -44,6 +44,7 @@ Every day at checkin time Keymaster reaches out to check if there are any guests
 - AWS Roles: Custom IAM Roles (JSON)
 - Email: AWS SES
 - Lambda: Lambda Function, EventBridge, Python 3.8 Layers
+- Cron: EventBridge using custom cron expressions
 - Credentials: AWS Secret Manager, static key files
 - Logs: CloudWatch
 - Version Control: Git, GitHub
