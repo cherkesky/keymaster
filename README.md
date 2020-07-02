@@ -40,7 +40,7 @@ Every day at checkin time Keymaster reaches out to check if there are any guests
 1. EventBridge triggers the keymasterFn lambda every 10 hours
 2. Refresh token is retrieved from AWS Secret Manager
 3. A POST request is sent to the BNB API with the refresh token in order to obtain a new auth token
-4. A request to update the old auth token with the new obtained one is sent to AWS Secret Manager
+4. A request to update the old auth token with the newly obtained one is sent to AWS Secret Manager
 
 
 ### Technology Stack: 
