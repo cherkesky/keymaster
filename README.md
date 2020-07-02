@@ -18,29 +18,29 @@ Every day at checkin time Keymaster reaches out to check if there are any guests
 
 #### Program Codes: 
 1. EventBridge triggers the keymasterFn lambda every day at 2:30PM
-2. Authorization token is being retrieved from AWS Secret Manager
+2. Authorization token is retrieved from AWS Secret Manager
 3. A GET request for this week's reservations is sent to the BNB API with the retrieved credentials
-4. The bnb.py layer processes the response and build a workorder for the wink.py layer
-5. The wink.py layer send a POST request to the Smart Hub API to program the locks with custom user codes for the guests that are checking in today
-6. Logs from the CloudWatch are being stream to KeymasterLogsFn lambda 
-7. KeymasterLogsFn lambda processes the log files and parses it to a HTML code using regex
-8. A customized email is being sent through AWS SES to system admin with a report containes the recent activity
+4. The bnb.py layer processes the response and builds a workorder for the wink.py layer
+5. The wink.py layer sends a POST request to the Smart Hub API to program the locks with custom user codes for today's guests
+6. Logs from the CloudWatch are streamed to KeymasterLogsFn lambda 
+7. KeymasterLogsFn lambda processes the log files and parses them to an HTML code using regex
+8. A customized email is sent through AWS SES to the system admin with a report containing the recent activity
 
 #### Delete Codes: 
 1. EventBridge triggers the keymasterFn lambda every day at 2:15PM
-2. Authorization token is being retrieved from AWS Secret Manager
+2. Authorization token is retrieved from AWS Secret Manager
 3. A GET request for this week's reservations is sent to the BNB API with the retrieved credentials
-4. The bnb.py layer processes the response and build a workorder for the wink.py layer
-5. The wink.py layer send a POST request to the Smart Hub API to delete the codes from the locks for the guests that checked out today
-6. Logs from the CloudWatch are being stream to KeymasterLogsFn lambda 
-7. KeymasterLogsFn lambda processes the log files and parses it to a HTML code using regex
-8. A customized email is being sent through AWS SES to system admin with a report containes the recent activity
+4. The bnb.py layer processes the response and builds a workorder for the wink.py layer
+5. The wink.py layer sends a POST request to the Smart Hub API to delete the checked out guests' codes from the locks
+6. Logs from the CloudWatch are streamed to KeymasterLogsFn lambda 
+7. KeymasterLogsFn lambda processes the log files and parses them to an HTML code using regex
+8. A customized email is sent through AWS SES to the system admin with a report containing the recent activity
 
 #### Rotate Token: 
 1. EventBridge triggers the keymasterFn lambda every 10 hours
-2. Refresh token is being retrieved from AWS Secret Manager
+2. Refresh token is retrieved from AWS Secret Manager
 3. A POST request is sent to the BNB API with the refresh token in order to obtain a new auth token
-4. A request to update the old auth token with the new obtained one sent to AWS Secret Manager
+4. A request to update the old auth token with the new obtained one is sent to AWS Secret Manager
 
 
 ### Technology Stack: 
