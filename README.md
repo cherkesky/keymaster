@@ -14,7 +14,7 @@ Every day at check-in time Keymaster reaches out to check if there are any guest
 
 ## Details
 
-### Flows
+### Flows:
 
 #### Program Codes: 
 1. EventBridge triggers the keymasterFn lambda every day at 2:30PM
