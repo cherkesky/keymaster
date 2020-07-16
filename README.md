@@ -5,6 +5,10 @@
 Keymaster is a tool for Airbnb owners to streamline their guests' check-in/out procedure.
 Every day at check-in time Keymaster reaches out to check if there are any guests coming in today, generates a custom user code based on the last 4 digits of the customer's phone number, and then reaches out to the property's smart hub with a request to program the locks. On check-out time the tool will delete the key codes from the locks (on the next update it will also set the smart thermostats to 'eco' mode upon checkout).
 
+
+Introduced  at NashJS July 2020 Monthly Meeting: https://bit.ly/KeymasterLive
+
+
 #### Design: 
 <img src="https://github.com/cherkesky/keymaster/blob/master/design.png" height="500" width="800">
 
