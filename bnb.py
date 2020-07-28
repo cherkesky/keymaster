@@ -98,7 +98,7 @@ def get_secret():
 
 def obtain_token(fromGetTodaysCheckins=False):
   url = refreshURL
-  payload = refreshPayload
+  payload = ref
   headers = {
     'Authorization': keys_bnb.refreshToken,
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -126,4 +126,4 @@ def obtain_token(fromGetTodaysCheckins=False):
   if fromGetTodaysCheckins==True:
     return getTodaysCheckins()
 
-# print (getTodaysCheckins())
+print (getTodaysCheckins())
