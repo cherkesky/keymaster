@@ -10,12 +10,23 @@ from datetime import datetime, timedelta
 from botocore.exceptions import ClientError
 from secret.urls_bnb import baseURL, refreshURL, refreshPayload, refreshContent
 
-def getTodaysCheckins():
+def getTodaysCheckins()-> dict:
+  """
+  Sends request to SmartBNB API and process the response to a reservation dictionary 
+
+  Parameters:
+  ----------
+  None
+
+  Returns:
+  ----------
+  checkinList: dict
+        Dictionary contains all the 'accepted' status reservations for in the last 10 days
+  """
   authToken = get_secret()
   today = str(datetime.now()).split(" ")[0]  # YYYY-MM-DD
   startDate = str(datetime.now()-timedelta(days=10)).split(" ")[0]  # YYYY-MM-DD -10days
-
-  url = f"{baseURL}?{airbnbAll}&start_date={startDate}&end_date={today}&include=guest"
+  url = f"{baseURL}?{airbnbAll}&start_date={startDate}&end_date={today}&include=guest&per_page=50"
 
   payload = {}
   headers = {
@@ -28,6 +39,7 @@ def getTodaysCheckins():
     print(e)
   utf8Response = response.text.encode('utf8')
   jsonResponse = json.loads(utf8Response)
+  
   try:
     statusCode = 000  # initial value. might get changed by an error code
     try:
@@ -55,50 +67,72 @@ def getTodaysCheckins():
       if len(checkinList) == 0:
         return 404
       else: 
-        print ("BNB Work Order: ",checkinList)
+        # print ("BNB Work Order: ",checkinList)
         return checkinList
 
   except Exception as e:
     print(e) 
 
 def get_secret():
-    secret_name = "BNBKey"
-    region_name = "us-east-2"
-    # Create a Secrets Manager client
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'DecryptionFailureException':
-            raise e
-        elif e.response['Error']['Code'] == 'InternalServiceErrorException':
-            raise e
-        elif e.response['Error']['Code'] == 'InvalidParameterException':
-            raise e
-        elif e.response['Error']['Code'] == 'InvalidRequestException':
-            raise e
-        elif e.response['Error']['Code'] == 'ResourceNotFoundException':
-            raise e
-    else:
-        if 'SecretString' in get_secret_value_response:
-            secret = get_secret_value_response['SecretString']
-            tokenResponseUtf8 = (secret.encode('utf8'))
-            jsonNewToken = json.loads(tokenResponseUtf8)
-            authToken = jsonNewToken['authToken']
-            return authToken
+  """
+  Retrieve a BNB connection token from AWS Secret Manager
 
-        else:
-            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+  Parameters:
+  ----------
+  None
+
+  Returns:
+  ----------
+  None
+  """
+  secret_name = "BNBKey"
+  region_name = "us-east-2"
+  # Create a Secrets Manager client
+  session = boto3.session.Session()
+  client = session.client(
+      service_name='secretsmanager',
+      region_name=region_name
+  )
+  try:
+      get_secret_value_response = client.get_secret_value(
+          SecretId=secret_name
+      )
+  except ClientError as e:
+      if e.response['Error']['Code'] == 'DecryptionFailureException':
+          raise e
+      elif e.response['Error']['Code'] == 'InternalServiceErrorException':
+          raise e
+      elif e.response['Error']['Code'] == 'InvalidParameterException':
+          raise e
+      elif e.response['Error']['Code'] == 'InvalidRequestException':
+          raise e
+      elif e.response['Error']['Code'] == 'ResourceNotFoundException':
+          raise e
+  else:
+      if 'SecretString' in get_secret_value_response:
+          secret = get_secret_value_response['SecretString']
+          tokenResponseUtf8 = (secret.encode('utf8'))
+          jsonNewToken = json.loads(tokenResponseUtf8)
+          authToken = jsonNewToken['authToken']
+          return authToken
+
+      else:
+          decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
 def obtain_token(fromGetTodaysCheckins=False):
-  url = refreshURL
-  payload = ref
+  """
+  Obtain a new BNB connection token from SmartBNB API and rotate it in AWS Secret Manager
+
+  Parameters:
+  ----------
+  None
+
+  Returns:
+  ----------
+  None
+  """
+  url = "https://auth.smartbnb.io/oauth/token"
+  payload = 'audience=api.smartbnb.io&grant_type=client_credentials'
   headers = {
     'Authorization': keys_bnb.refreshToken,
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -126,4 +160,4 @@ def obtain_token(fromGetTodaysCheckins=False):
   if fromGetTodaysCheckins==True:
     return getTodaysCheckins()
 
-print (getTodaysCheckins())
+# print (getTodaysCheckins())
