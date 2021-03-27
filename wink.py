@@ -238,6 +238,6 @@ def obtain_wink_token()->None:
   print ("Access Token Has Been Refreshed")
 
 # programCodes(makeWorkOrder())
-deleteCodes(makeWorkOrder())
+# deleteCodes(makeWorkOrder())
 # obtain_wink_token()
 # print (get_wink_secret())
