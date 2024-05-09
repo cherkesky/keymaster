@@ -9,7 +9,8 @@ Every day at check-in time Keymaster reaches out to check if there are any guest
 Introduced  at NashJS July 2020 Monthly Meeting: https://bit.ly/KeymasterLive
 
 ### Update
-#### The app changed it name to Maistr and grew beyond this codebase to a private repository. The app provides free of charge code management systems to selected Airbnb owners in Nashville, TN.
+#### The application rebranded as Maistr and expanded beyond its original codebase into a private repository. It now offers complimentary code management systems to handpicked Airbnb hosts in Nashville, TN, aiming to enhance the safety of the Airbnb experience.
+
 #### Updated Architecture + Design: 
 <img src="https://github.com/cherkesky/checkbnbavail/blob/main/arch.jpeg" height="500" width="800">
 
