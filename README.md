@@ -8,8 +8,12 @@ Every day at check-in time Keymaster reaches out to check if there are any guest
 
 Introduced  at NashJS July 2020 Monthly Meeting: https://bit.ly/KeymasterLive
 
+### Update
+#### The app changed it name to Maistr and grew beyond this codebase to a private repository. The app provides free of charge code management systems to selected Airbnb owners in Nashville, TN.
+#### Updated Architecture + Design: 
+<img src="https://github.com/cherkesky/checkbnbavail/blob/main/arch.jpeg" height="500" width="800">
 
-#### Design: 
+#### Original Design: 
 <img src="https://github.com/cherkesky/keymaster/blob/master/design.png" height="500" width="800">
 
 #### KeymasterFn lambda:
@@ -65,3 +69,4 @@ https://gist.github.com/cherkesky/e77d6d1fd53e5c2af5d9bdb5ccc8b377
 
 The code for the KeymasterLogsFn lambda:
 https://gist.github.com/cherkesky/9f772b14fb5d454bc7532985891b83a3
+
